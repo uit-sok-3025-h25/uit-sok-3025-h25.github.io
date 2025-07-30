@@ -4,9 +4,6 @@ name: SOK-3025 Econometric Analysis: Choice, Causality & Panels
 semester: Fall Semester 2025 
 image: tema.jpg
 
-
-
-
 #--------------Avanserte instillinger---------------------------------------------------------------------
 topbox-farge: 00617f
 
@@ -24,8 +21,6 @@ linkfarge: f2a900 #Farge linker
 uitlogo: ./assets/img/uit.png
 #Skal stå tom
 title: ''
-
-
 
 #-------------IKKE SLETT---------------------------------------------------------------------
 theme: jekyll-theme-primer
