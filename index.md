@@ -1,10 +1,10 @@
-{% include top-box.html %} <!-- Kode for å inkludere boksen på toppen av siden. Se _config.yml for å gjøre endringer. -->
-{% include navbar.html %} <!-- Kode for navigasjonsmeny. Se navbar.html for å gjøre endringer. -->
-<!-- Gjør endringer under her -->
+{% include navbar.html %}  {% include top-box.html %}
 
-## Course Flow   
+## Course Plan
 
-- [Where are we(progress),and what to do next!](courseplan.md){:target="blank"}
+The lecture and seminar plan contains information about the timing, topics, course instructor, as well as resources/tasks for each topic.  
+
+- [Lecture and Seminar Plan](courseplan.md){:target="blank"}
 
 ## Schedule 
 A link to [Timeplan](https://tp.educloud.no/uit/app/schedule?semester=25h&scheduleType=course&filterOpen=true&summary=true&tab=calendar&course=SOK-3025%C2%A41&subjectArea=186341300){:target="blank"} at timeplan.uit.no
@@ -21,7 +21,7 @@ See full description [here](https://fr.uit.no/utdanning/aktivt/emne/SOK-3025){:t
 
  ## Subject teachers   
 
-- [Dejene, G.K.](https://uit.no/ansatte/person?p_document_id=559969){:target="blank"} (subject manager)
+- [Dejene, G.K.](https://uit.no/ansatte/dejene.g.kidane){:target="blank"} (subject manager)
 - [Øystein Myrland](https://uit.no/ansatte/oystein.myrland){:target="blank"} 
 
 ## Curriculum
@@ -34,6 +34,6 @@ Curriculum: Chapters 10, 11, 15, and 16.
 
 ## Announcements
 
-Announcements and messages will be posted in Canvas..
+Announcements and messages will be posted in Canvas.
 
   
