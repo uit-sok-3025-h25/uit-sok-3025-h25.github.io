@@ -19,7 +19,7 @@ See full description [here](https://fr.uit.no/utdanning/aktivt/emne/SOK-3025){:t
 
  There will be a written project assignment and a final exam. More information will be provided soon.
 
- ## Subject teachers   
+## Instructors
 
 - [Dejene, G.K.](https://uit.no/ansatte/dejene.g.kidane){:target="blank"} (subject manager)
 - [Øystein Myrland](https://uit.no/ansatte/oystein.myrland){:target="blank"} 
