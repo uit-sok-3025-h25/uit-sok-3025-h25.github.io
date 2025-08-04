@@ -17,7 +17,7 @@ See full description [here](https://fr.uit.no/utdanning/aktivt/emne/SOK-3025){:t
 
 ## Obligatory Assignments (Examination) and Submission 
 
- There will be a written project assignment and a final exam. More information will be provided soon.
+ In this course, you are required to complete one mandatory term paper based on an assigned topic or dataset and deliver a project presentation. The final grade is based solely on the term paper (i.e., there is no final exam). The term paper must be submitted via Wiseflow by the specified deadline. Further details will be provided during the course.
 
 ## Instructors
 
