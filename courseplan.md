@@ -9,6 +9,7 @@
 ||| Chapter 10 [R code for Ch.10](https://github.com/uit-sok-3008-H22/uit-sok-3008-H22.github.io/blob/main/chapter_10.R){:target='_blank_'}|
 |2|12/08|Continue with ch-10|
 |3|14/08| Seminar: Try the following exercises (i.e., Q10.18, 10.20, and 10.15) from the book. We will look at the first two questions together in class on Thursday|
+|||[R codes for Q10.18 and Q10.20](https://github.com/uit-sok-3025-h25/uit-sok-3025-h25.github.io/blob/main/Seminar_chap10.R){:target='_blank_'}|
 | 2| 18/08| Chapter 11 - Simultaneous Equations Models. |
 |||[R code for Ch.11](https://github.com/uit-sok-3008-H22/uit-sok-3008-H22.github.io/blob/main/Chapter%2011.R){:target='_blank_'} |
 | 3| 18/08|Seemingly Unrelated Regression (SUR) Model.  <br /> Read SUR (PDF available on Canvas) before class.   |
