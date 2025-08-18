@@ -1,11 +1,11 @@
 
+# Seemingly Unrelated Regression (SUR)
 
-# SUR Estimation
 
 rm(list=ls())
 require(systemfit) || {install.packages("systemfit");require(systemfit)}
 
-# Example, eq. 11.2.30
+# Example, eq. 11.2.30  (on page 453)
 
 table.11.1 <- tibble::tribble(
   ~y1,   ~x12,  ~x13,      ~y2,   ~x22,  ~x23,
@@ -43,15 +43,19 @@ fit1 ; fit2
 
 # Testing for Contemporaneous Correlation
 x <- matrix(resid(fit1),resid(fit2), nrow=length(table.11.1$y1), ncol = 2)
+
 cor(x)
+cov(x)
 
 # H0: s12 = 0, H1: s12 != 0
+
 # LM-test, equation 11.2.34 
-length(table.11.1$y1)*cor(x)[1,2]^2 > qchisq(0.95, df=1, ncp = 0, lower.tail = TRUE, log.p = FALSE)
+lambda <- length(table.11.1$y1)*cor(x)[1,2]^2
 
-?qchisq
-
-# Accept H0, we donot have cont. corr. Hence, we can estimate using OLS or SUR
+# compare 
+lambda > qchisq(0.95, df=1, ncp = 0, lower.tail = TRUE, log.p = FALSE)
+# Accept H0 (we do not have cont. corr. Hence, we can simply estimate
+# using OLS)
 
 #' Estimated as a system
 eq1 <- y1~x12+x13
@@ -59,24 +63,30 @@ eq2 <- y2~x22+x23
 
 eqSystem <- list(eq1 = eq1, eq2 = eq2)
 
+#??systemfit
+
+#browseURL("https://www.jstatsoft.org/article/view/v023i04") 
+
+
 # Estimated equation by equation OLS
 fitols <- systemfit(eqSystem, method = "OLS", data = table.11.1)
 print(fitols)
 coef(summary(fitols))
 
-# Estimated equation by equation SUR
+# Estimated equation by SUR
 fitsur <- systemfit(eqSystem, method = "SUR", data = table.11.1)
-print(fitsur)
-coef(summary(fitsur))
 summary(fitsur)
 
+# difference b/n estimates using OLS and SUR
 round(coef(fitols)-coef(fitsur),4)
 
-# ------------------------------------------------------------
 
-# A further example
+##################################################################################
+##################################################################################
+
+# A further example (on page 460)
 rm(list=ls())
-
+require(systemfit) || {install.packages("systemfit");require(systemfit)}
 table.11.3 <- tibble::tribble(
   ~p1,    ~p2,    ~p3,      ~y,    ~q1,    ~q2,     ~q3,
   10.763,  4.474,  6.629, 487.648, 11.632, 13.194,   45.77,
@@ -130,7 +140,10 @@ cor(x)[3,2]^2
 # H0: s12 = s13 = s23 = 0
 # LM-test, equation 11.2.34 
 
-30*(cor(x)[2,1]^2+cor(x)[3,1]^2+cor(x)[3,2]^2) > qchisq(0.95, df=3, ncp = 0, lower.tail = TRUE, log.p = FALSE)
+lambda <- length(table.11.3$p1)*(cor(x)[2,1]^2+cor(x)[3,1]^2+cor(x)[3,2]^2) 
+
+#compare 
+lambda > qchisq(0.95, df=3, ncp = 0, lower.tail = TRUE, log.p = FALSE)
 # Reject H0, we have cont. corr
 
 #' Estimated as a system
@@ -141,13 +154,18 @@ eq3 <- log(q3)~log(p3)+log(y)
 eqSystem <- list(eq1 = eq1, eq2 = eq2, eq3=eq3)
 
 fitols <- systemfit(eqSystem, method = "OLS", data = table.11.3)
-print(fitols)
-coef(summary(fitols))
+summary(fitols)
 
 fitsur <- systemfit(eqSystem, method = "SUR", data = table.11.3)
-print(fitsur)
-coef(summary(fitsur))
 summary(fitsur)
+
+# difference b/n estimates using OLS and SUR
+round(coef(fitols)-coef(fitsur),4)
+
+
+#' In demand analysis, it is common to estimate the coefficients 
+#' under linear restrictions (e.g., homogeneity,  symmetry, etc.)
+#'that are derived from the underlying theoretical model.
 
 #' Create restriction matrix to impose restrictions;
 #' b11 = b22 = b33, or b11 - b22 = 0 & b11 - b33 = 0
@@ -155,44 +173,35 @@ summary(fitsur)
 
 ?systemfit
 
-#' Create a a zero matrix R of size, (# of restrictions) X (# of parameters in the model) = 2X9 matrix
-R1 <- matrix(0, nrow = 2, ncol = 9)
-R1[1, 2] <- 1
-R1[1, 5] <- -1
-R1[2, 2] <- 1
-R1[2, 8] <- -1
-R1
-
-
-# Constrained SUR estimation
-fitsur.r <- systemfit(eqSystem, "SUR", data = table.11.3, restrict.matrix = R1 )
-summary(fitsur.r)
-
-# Constrained OLS estimation
-fitsur.r.ols <- systemfit(eqSystem, "OLS", data = table.11.3, restrict.matrix = R1 )
-fitsur.r.ols
-
-#' perform LR-test (The likelihood-ratio statistic) 
-
-?lrtest.systemfit
-
-lrtest(fitsur.r, fitsur) # Keep H0
-qchisq(0.95, df=2, ncp = 0, lower.tail = TRUE, log.p = FALSE)
-
-# the same hypothesis in symbolic form,
-# but tested on the unrestricted model
+# Restrictions in symbolic form,
 joint.hyp <- c("eq1_log(p1) - eq2_log(p2) = 0", "eq1_log(p1) - eq3_log(p3) = 0")
 
+# Constrained OLS estimation
+fitsur.r.ols <- systemfit(eqSystem, "OLS", data = table.11.3, restrict.matrix = joint.hyp )
+fitsur.r.ols
+
+
+fitsur.r <- systemfit(eqSystem, "SUR", data = table.11.3, restrict.matrix = joint.hyp )
+summary(fitsur.r)
+
+# Are the estimated coeff. the same? Check 
+coef(fitsur.r)-coef(fitsur.r.ols) # 
+
+
+# Q Which model (the restricted or unrestricted) best fit the data?
+
+#' Perform LR-test (likelihood-ratio statistic) 
+?lrtest.systemfit
+lrtest(fitsur.r, fitsur) # Keep H0
+
+
 ## perform Theil's F test
-linearHypothesis(fitsur, R1) 
 linearHypothesis(fitsur, joint.hyp)
 
 ## perform Wald test with F statistic
-linearHypothesis(fitsur, R1, test = "F" ) 
-linearHypothesis(fitsur, joint.hyp )
+linearHypothesis(fitsur, joint.hyp,test = "F" )
 
 ## perform Wald-test with chi^2 statistic
-linearHypothesis(fitsur, R1, test = "Chisq" ) 
 linearHypothesis(fitsur, joint.hyp, test = "Chisq" )
 
 # ------------------------------------------------------------
@@ -206,33 +215,17 @@ eq3 <- log(q3)~log(p1)+log(p2)+log(p3)+log(y)
 eqSystem <- list(eq1 = eq1, eq2 = eq2, eq3=eq3)
 
 fitsur <- systemfit(eqSystem, method = "SUR", data = table.11.3)
-print(fitsur)
-coef(summary(fitsur))
 summary(fitsur)
 
 #' Create restriction matrix to impose symmetry restrictions;
 #' b12 = b21 ; b13 = b31 ; b23 = b32
-R2 <- matrix(0, nrow = 3, ncol = 15)
-R2
-R2[1, 3] <- 1
-R2[1, 7] <- -1
-R2[2, 4] <- 1
-R2[2, 12] <- -1
-R2[3, 9] <- 1
-R2[3, 13] <- -1
-R2
 
-fitsur.symmetry <- systemfit(eqSystem, method="SUR", data = table.11.3, restrict.matrix = R2)
-summary(fitsur.symmetry)
-
-R2.alt <- c("eq1_log(p2) - eq2_log(p1)=0",
+R2 <- c("eq1_log(p2) - eq2_log(p1)=0",
             "eq1_log(p3) - eq3_log(p1)=0",
             "eq2_log(p3) - eq3_log(p2)=0")
 
-fitsur.symmetry.alt <- systemfit(eqSystem, method="SUR", data = table.11.3, restrict.matrix = R2.alt)
-summary(fitsur.symmetry.alt)
-
-coef(fitsur.symmetry)-coef(fitsur.symmetry.alt)
+fitsur.symmetry <- systemfit(eqSystem, method="SUR", data = table.11.3, restrict.matrix = R2)
+summary(fitsur.symmetry)
 
 # Homogeneity
 R3 <- c("eq1_log(p1) + eq1_log(p2) + eq1_log(p3)=0",
@@ -252,5 +245,60 @@ R4 <- c("eq1_log(p1) + eq1_log(p2) + eq1_log(p3)=0",
 
 fitsur.homogeneity.symmetry <- systemfit(eqSystem, method="SUR", data = table.11.3, restrict.matrix = R4)
 summary(fitsur.homogeneity.symmetry)
+
+lrtest(fitsur, fitsur.homogeneity.symmetry) 
+
+
+
+# more example 
+rm(list = ls())
+library(systemfit)
+
+#?systemfit
+
+data( "Kmenta" )
+
+head(Kmenta)
+
+
+library(mosaic)
+Kmenta <- Kmenta %>% mutate(consump = Q, price = P, income = D, farmPrice = F, trend = A)
+
+eqDemand <- consump ~ price + income
+eqSupply <- consump ~ price + farmPrice + trend
+
+system <- list( demand = eqDemand, supply = eqSupply )
+
+## unconstrained SUR estimation
+fitsur <- systemfit( system, "SUR", data = Kmenta )
+print(fitsur)
+
+# create restriction matrix to impose \eqn{beta_2 = \beta_6}, ie, coeffs of price in the first eqn, and farmprice in the seond eq
+R1 <- matrix( 0, nrow = 1, ncol = 7 )
+R1[ 1, 2 ] <- 1
+R1[ 1, 6 ] <- -1
+
+R1
+
+## constrained SUR estimation
+fitsur1 <- systemfit( system, "SUR", data = Kmenta, restrict.matrix = R1 )
+print(fitsur1)
+
+## perform LR-test
+lrTest1 <- lrtest( fitsur1, fitsur )
+print( lrTest1 )   # rejected
+
+# create restriction matrix to impose \eqn{beta_2 = - \beta_6}  <---- note the -ve sign before beta_6
+R2 <- matrix( 0, nrow = 1, ncol = 7 )
+R2[ 1, 2 ] <- 1
+R2[ 1, 6 ] <- 1
+
+## constrained SUR estimation
+fitsur2 <- systemfit( system, "SUR", data = Kmenta, restrict.matrix = R2 )
+print(fitsur2)
+
+## perform LR-test
+lrTest2 <- lrtest( fitsur2, fitsur )
+print( lrTest2 )   # accepted
 
 
