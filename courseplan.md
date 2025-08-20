@@ -13,6 +13,7 @@
 | 4| 18/08| Chapter 11 - Simultaneous Equations Models. |
 |||[R code for Ch.11](https://github.com/uit-sok-3008-H22/uit-sok-3008-H22.github.io/blob/main/Chapter%2011.R){:target='_blank_'} |
 |5|20/08|Exercise: Try the following exercises (i.e., Q11.18, 11.19, and 11.20) from the book. We will look at them together in class|
+|||[R codes for the Exercises](https://github.com/uit-sok-3025-h25/uit-sok-3025-h25.github.io/blob/main/Ch_11.R){:target='_blank_'}|
 | 6| 18/08|Seemingly Unrelated Regression (SUR) Model.  <br /> Read SUR (PDF available on Canvas) before class.   |
 |||[R code for SUR](https://github.com/uit-sok-3025-h25/uit-sok-3025-h25.github.io/blob/main/SUR.R){:target='_blank_'} |
 |7|||
