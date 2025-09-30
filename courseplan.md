@@ -16,8 +16,9 @@
 |||[R codes for the Exercises](https://github.com/uit-sok-3025-h25/uit-sok-3025-h25.github.io/blob/main/Ch_11.R){:target='_blank_'}|
 | 6| 18/08|Seemingly Unrelated Regression (SUR) Model.  <br /> Read SUR (PDF available on Canvas) before class.   |
 |||[R code for SUR](https://github.com/uit-sok-3025-h25/uit-sok-3025-h25.github.io/blob/main/SUR.R){:target='_blank_'} |
-|7|||
-|8|||
-|9|||
+|7| 30/9 |  Panel Data Models |
+| |      |  Quarto file in Canvas -> Files                 |
+|8|  01/10 | Panel Data Models  |
+|9| 03/10 | Panel Data Models |
 |10|||
 
